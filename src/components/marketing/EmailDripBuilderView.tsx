@@ -77,27 +77,62 @@ export const EmailDripBuilderView: React.FC = () => {
           audience: 'B2B Marketing Directors',
         }),
       });
-      const data = await res.json();
-      if (data.success && data.emails && data.emails.length > 0) {
-        const firstEmail = data.emails[0];
-        setBlocks([
-          {
-            id: `block-${Date.now()}-1`,
-            type: 'Body Copy',
-            title: `Subject: ${firstEmail.subject}`,
-            content: firstEmail.body,
-          },
-          {
-            id: `block-${Date.now()}-2`,
-            type: 'CTA Button',
-            title: 'Action Button',
-            content: 'Schedule Demo Now',
-            buttonUrl: 'https://edpulse.app/demo',
-          },
-        ]);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.emails && data.emails.length > 0) {
+          const firstEmail = data.emails[0];
+          setBlocks([
+            {
+              id: `block-${Date.now()}-1`,
+              type: 'Body Copy',
+              title: `Subject: ${firstEmail.subject}`,
+              content: firstEmail.body,
+            },
+            {
+              id: `block-${Date.now()}-2`,
+              type: 'CTA Button',
+              title: 'Action Button',
+              content: 'Schedule Demo Now',
+              buttonUrl: 'https://edpulse.app/demo',
+            },
+          ]);
+          setIsGenerating(false);
+          return;
+        }
       }
+      // Fallback block sequence for GitHub Pages hosting
+      setBlocks([
+        {
+          id: `block-${Date.now()}-1`,
+          type: 'Body Copy',
+          title: `Subject: Introducing ${aiProduct || 'EDPulse Digital OS'} - Accelerate Your Pipeline`,
+          content: `Hi Founder,\n\nAre you looking to scale your marketing velocity without adding headcount? With ${aiProduct || 'EDPulse'}, automate lead capture, CRM syncing, and CRO analytics in one unified dashboard.\n\nLet's discuss how we can increase your conversion rate by 3x this month.`,
+        },
+        {
+          id: `block-${Date.now()}-2`,
+          type: 'CTA Button',
+          title: 'Primary Action',
+          content: 'Book 15-Min Strategy Session',
+          buttonUrl: 'https://edpulse.app/demo',
+        },
+      ]);
     } catch (err) {
       console.error(err);
+      setBlocks([
+        {
+          id: `block-${Date.now()}-1`,
+          type: 'Body Copy',
+          title: `Subject: Introducing ${aiProduct || 'EDPulse Digital OS'} - Accelerate Your Pipeline`,
+          content: `Hi Founder,\n\nAre you looking to scale your marketing velocity without adding headcount? With ${aiProduct || 'EDPulse'}, automate lead capture, CRM syncing, and CRO analytics in one unified dashboard.\n\nLet's discuss how we can increase your conversion rate by 3x this month.`,
+        },
+        {
+          id: `block-${Date.now()}-2`,
+          type: 'CTA Button',
+          title: 'Primary Action',
+          content: 'Book 15-Min Strategy Session',
+          buttonUrl: 'https://edpulse.app/demo',
+        },
+      ]);
     } finally {
       setIsGenerating(false);
     }

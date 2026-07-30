@@ -63,12 +63,29 @@ export const ContentCalendarView: React.FC = () => {
           tone: 'Professional & High-Converting',
         }),
       });
-      const data = await res.json();
-      if (data.success) {
-        setPostText(data.content);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.content) {
+          setPostText(data.content);
+          setIsGenerating(false);
+          return;
+        }
       }
+      // Static fallback for GitHub Pages hosting
+      setPostText(`🚀 High-Growth Insight for ${platform}:\n\n` +
+        `When scaling ${aiTopic}, the key is optimizing the initial touchpoint and engagement loop.\n\n` +
+        `1️⃣ Streamline core customer conversion funnels\n` +
+        `2️⃣ Automate real-time cross-platform lead routing\n` +
+        `3️⃣ Track CAC vs LTV velocity with precision\n\n` +
+        `How is your team tackling ${aiTopic} this quarter? Let's connect below! 👇`);
     } catch (err) {
       console.error(err);
+      setPostText(`🚀 High-Growth Insight for ${platform}:\n\n` +
+        `When scaling ${aiTopic}, the key is optimizing the initial touchpoint and engagement loop.\n\n` +
+        `1️⃣ Streamline core customer conversion funnels\n` +
+        `2️⃣ Automate real-time cross-platform lead routing\n` +
+        `3️⃣ Track CAC vs LTV velocity with precision\n\n` +
+        `How is your team tackling ${aiTopic} this quarter? Let's connect below! 👇`);
     } finally {
       setIsGenerating(false);
     }
