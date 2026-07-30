@@ -1,0 +1,6 @@
+{
+  "name": "EDPulse Desktop OS",
+  "description": "Integrated Marketing and Operating OS built with Windows WPF desktop styling, 8 service pillars, AI content engine, and C# .NET WPF exporter.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
